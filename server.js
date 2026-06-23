@@ -4,18 +4,16 @@ const app = express();
 
 app.use(express.json());
 
-// Wklej swój Discord Webhook URL tutaj:
 const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1519050131570298971/ovTGxTam3oJeRoPUpkJMwW5ii_5M75bvmBgp9vE-qc2MJ-cOGXbGqQbjHUZ6vsicKFKK";
-
-// Opcjonalny secret żeby tylko Twój serwer Roblox mógł wysyłać
 const SECRET = "twoj_tajny_klucz_123";
 
 app.post("/webhook", async (req, res) => {
-    // Sprawdzenie klucza
     const auth = req.headers["x-secret"];
     if (auth !== SECRET) {
         return res.status(403).json({ error: "Forbidden" });
     }
+
+    console.log("Payload otrzymany:", JSON.stringify(req.body, null, 2));
 
     try {
         const response = await fetch(DISCORD_WEBHOOK, {
@@ -24,20 +22,21 @@ app.post("/webhook", async (req, res) => {
             body: JSON.stringify(req.body)
         });
 
+        const text = await response.text();
+        console.log("Discord status:", response.status);
+        console.log("Discord odpowiedź:", text);
+
         if (!response.ok) {
-            const text = await response.text();
-            console.error("Discord error:", text);
             return res.status(500).json({ error: text });
         }
 
         res.sendStatus(200);
     } catch (e) {
-        console.error("Fetch error:", e);
+        console.error("Błąd:", e);
         res.sendStatus(500);
     }
 });
 
-// Health check żeby Railway wiedział że serwer żyje
 app.get("/", (req, res) => {
     res.send("Proxy działa!");
 });
