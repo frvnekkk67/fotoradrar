@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 // Wklej swój Discord Webhook URL tutaj:
-const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/XXXX/YYYY";
+const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1519050131570298971/ovTGxTam3oJeRoPUpkJMwW5ii_5M75bvmBgp9vE-qc2MJ-cOGXbGqQbjHUZ6vsicKFKK";
 
 // Opcjonalny secret żeby tylko Twój serwer Roblox mógł wysyłać
 const SECRET = "twoj_tajny_klucz_123";
